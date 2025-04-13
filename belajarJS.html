@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="style3.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkulator Umur By Hanpat55</title>
+</head>
+
+<body>
+<h2>Kalkulator Umur Lengkap</h2>
+
+<label for="tglLahir">Tanggal Lahir:</label>
+<input type="date" id="tglLahir">
+<button onclick="hitungUmur()">Hitung Umur</button>
+
+<h3>Umurmu:</h3>
+<ul>
+  <li><strong>Tahun:</strong> <span id="tahun">-</span></li>
+  <li><strong>Bulan:</strong> <span id="bulan">-</span></li>
+  <li><strong>Hari:</strong> <span id="hari">-</span></li>
+</ul>
+
+<h3>Sisa waktu menuju ulang tahun selanjutnya:</h3>
+<p><span id="ulangTahun">-</span></p>
+
+<button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+
+<select class="perbandingan" id="tokohSelect">
+  <option value="1">Albert Einstein</option>
+  <option value="2">Elon Musk</option>
+  <option value="3">Bill Gates</option>
+</select>
+
+<button onclick="bandingkanUmur()">Bandingkan Umur</button>
+
+<button onclick="saranKesehatan()">Saran Kesehatan</button>
+
+<script>
+  function hitungUmur() {
+    const input = document.getElementById("tglLahir").value;
+    if (!input) {
+      alert("Masukkan tanggal lahirmu dulu!");
+      return;
+    }
+
+    localStorage.setItem("tanggalLahir",input)
+
+    const lahir = new Date(input);
+    const sekarang = new Date();
+
+    let tahun = sekarang.getFullYear() - lahir.getFullYear();
+    let bulan = sekarang.getMonth() - lahir.getMonth();
+    let hari = sekarang.getDate() - lahir.getDate();
+
+    if (hari < 0) {
+      bulan--;
+      hari += new Date(sekarang.getFullYear(), sekarang.getMonth(), 0).getDate();
+    }
+
+    if (bulan < 0) {
+      tahun--;
+      bulan += 12;
+    }
+
+    // Tampilkan hasil umur
+    document.getElementById("tahun").innerText = tahun;
+    document.getElementById("bulan").innerText = bulan;
+    document.getElementById("hari").innerText = hari;
+
+    // Hitung waktu ke ulang tahun berikutnya
+    let tahunDepan = sekarang.getFullYear();
+    if (
+      sekarang.getMonth() > lahir.getMonth() ||
+      (sekarang.getMonth() === lahir.getMonth() && sekarang.getDate() >= lahir.getDate())
+    ) {
+      tahunDepan++;
+    }
+
+    const ulangTahunSelanjutnya = new Date(tahunDepan, lahir.getMonth(), lahir.getDate());
+    const sisaMs = ulangTahunSelanjutnya - sekarang;
+
+    const sisaHari = Math.floor(sisaMs / (1000 * 60 * 60 * 24));
+    document.getElementById("ulangTahun").innerText = `${sisaHari} hari lagi`;
+  }
+
+// Saat halaman dibuka, cek localStorage
+window.onload = function () {
+  const savedTanggal = localStorage.getItem("tanggalLahir");
+  if (savedTanggal) {
+    document.getElementById("tglLahir").value = savedTanggal;
+    hitungUmur();
+  }
+
+  const modeGelap = localStorage.getItem("darkMode");
+  if (modeGelap === "true") {
+    document.body.classList.add("dark");
+  }
+};
+
+function toggleDarkMode() {
+  document.body.classList.toggle("dark");
+  const isDark = document.body.classList.contains("dark");
+  localStorage.setItem("darkMode", isDark);
+}
+
+function hitungUmur() {
+  const input = document.getElementById("tglLahir").value;
+  if (!input) {
+    alert("Masukkan tanggal lahirmu dulu!");
+    return;
+  }
+
+  localStorage.setItem("tanggalLahir", input);
+
+  const lahir = new Date(input);
+  const sekarang = new Date();
+
+  let tahun = sekarang.getFullYear() - lahir.getFullYear();
+  let bulan = sekarang.getMonth() - lahir.getMonth();
+  let hari = sekarang.getDate() - lahir.getDate();
+
+  if (hari < 0) {
+    bulan--;
+    hari += new Date(sekarang.getFullYear(), sekarang.getMonth(), 0).getDate();
+  }
+
+  if (bulan < 0) {
+    tahun--;
+    bulan += 12;
+  }
+
+  document.getElementById("tahun").innerText = tahun;
+  document.getElementById("bulan").innerText = bulan;
+  document.getElementById("hari").innerText = hari;
+
+  let tahunDepan = sekarang.getFullYear();
+  if (
+    sekarang.getMonth() > lahir.getMonth() ||
+    (sekarang.getMonth() === lahir.getMonth() && sekarang.getDate() >= lahir.getDate())
+  ) {
+    tahunDepan++;
+  }
+
+  const ulangTahunSelanjutnya = new Date(tahunDepan, lahir.getMonth(), lahir.getDate());
+  const sisaMs = ulangTahunSelanjutnya - sekarang;
+  const sisaHari = Math.floor(sisaMs / (1000 * 60 * 60 * 24));
+  document.getElementById("ulangTahun").innerText = `${sisaHari} hari lagi`;
+}
+
+// Minta izin untuk notifikasi
+function requestNotificationPermission() {
+  if (Notification.permission !== "granted") {
+    Notification.requestPermission().then((permission) => {
+      if (permission === "granted") {
+        console.log("Notifikasi diizinkan");
+      }
+    });
+  }
+}
+
+// Kirim notifikasi ulang tahun
+function setBirthdayReminder() {
+  const input = document.getElementById("tglLahir").value;
+  if (!input) return;
+
+  const lahir = new Date(input);
+  const sekarang = new Date();
+
+  let tahunDepan = sekarang.getFullYear();
+  if (
+    sekarang.getMonth() > lahir.getMonth() ||
+    (sekarang.getMonth() === lahir.getMonth() && sekarang.getDate() >= lahir.getDate())
+  ) {
+    tahunDepan++;
+  }
+
+  const ulangTahunSelanjutnya = new Date(tahunDepan, lahir.getMonth(), lahir.getDate());
+  const sisaMs = ulangTahunSelanjutnya - sekarang;
+  const sisaHari = Math.floor(sisaMs / (1000 * 60 * 60 * 24));
+
+  if (sisaHari > 0 && sisaHari <= 7) {
+    new Notification("Ulang Tahun Kamu!", {
+      body: `Ulang tahunmu tinggal ${sisaHari} hari lagi!`,
+    });
+  }
+}
+
+// Panggil fungsi minta izin dan pengingat
+requestNotificationPermission();
+setBirthdayReminder();
+
+const tokohLahir = {
+  1: new Date("1879-03-14"), // Albert Einstein
+  2: new Date("1971-06-28"), // Elon Musk
+  3: new Date("1955-10-28"), // Bill Gates
+};
+
+function bandingkanUmur() {
+  const tokohId = document.getElementById("tokohSelect").value;
+  const tokohLahirTanggal = tokohLahir[tokohId];
+  const sekarang = new Date();
+
+  const selisihTahun = sekarang.getFullYear() - tokohLahirTanggal.getFullYear();
+  alert(`Umur ${tokohSelect.options[tokohId - 1].text} adalah ${selisihTahun} tahun.`);
+}
+
+function saranKesehatan() {
+  const umur = document.getElementById("tahun").innerText;
+  let saran = "";
+
+  if (umur < 20) {
+    saran = "Jaga pola makan yang sehat dan rutin berolahraga!";
+  } else if (umur < 40) {
+    saran = "Mulai perhatian dengan kesehatan jantung dan otot.";
+  } else {
+    saran = "Pastikan cek kesehatan rutin dan kontrol pola makan.";
+  }
+
+  alert(saran);
+}
+
+</script>
+
+</body>
+</html>
