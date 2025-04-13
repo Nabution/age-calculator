@@ -1,0 +1,137 @@
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f3f4f6;
+    padding: 30px;
+    max-width: 500px;
+    margin: auto;
+    color: #111827;
+  }
+
+  h2, h3 {
+    color: #2563eb;
+  }
+
+  input[type="date"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    margin-right: 10px;
+  }
+
+  button {
+    background-color: #2563eb;
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+  }
+
+  button:hover {
+    background-color: #1d4ed8;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  li {
+    padding: 4px 0;
+  }
+
+  span {
+    font-weight: bold;
+    color: #111;
+  }
+
+  p {
+    background-color: #dbeafe;
+    padding: 10px;
+    border-radius: 6px;
+    display: inline-block;
+  }
+  
+  body.dark {
+  background-color: #111827;
+  color: #f3f4f6;
+}
+
+body.dark h2,
+body.dark h3 {
+  color: #60a5fa;
+}
+
+body.dark button {
+  background-color: #1e40af;
+}
+
+body.dark button:hover {
+  background-color: #1d4ed8;
+}
+
+body.dark p {
+  background-color: #1e3a8a;
+}
+
+body.dark input {
+  background-color: #1f2937;
+  color: #f3f4f6;
+  border: 1px solid #334155;
+}
+
+@media (max-width: 600px) {
+  body {
+    padding: 20px;
+    font-size: 16px;
+  }
+
+  input[type="date"],
+  button {
+    width: 100%;
+    margin-top: 10px;
+    font-size: 16px;
+  }
+
+  button {
+    padding: 12px;
+  }
+
+  ul {
+    padding-left: 0;
+  }
+
+  p {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .perbandingan{
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    margin-right: 10px;
+    width:100%;
+    margin-top: 10px;
+  }
+  
+  button {
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #1d4ed8;
+}
+
+#tahun, #bulan, #hari {
+  transition: transform 0.3s ease-in-out;
+}
+
+#tahun:hover, #bulan:hover, #hari:hover {
+  transform: scale(1.1);
+}
+  
+}
